@@ -8,6 +8,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\Medico;
+use App\Models\Paciente;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,14 +26,33 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'senha' => 'required|string',
+        ]);
 
-        $request->session()->regenerate();
+        // Verifica se é um médico ou paciente
+        $medico = Medico::where('email', $validatedData['email'])->first();
+        $paciente = Paciente::where('email', $validatedData['email'])->first();
 
-        return redirect()->intended(route('/', absolute: false));
+        if ($medico && Hash::check($validatedData['senha'], $medico->senha)) {
+            Log::info('Médico logado: ' . $medico->email);
+            // Loga como médico
+            Auth::guard('medicos')->login($medico); // Loga o médico
+            return redirect()->route('medico.dashboard'); // Redireciona para a página desejada
+        } elseif ($paciente && Hash::check($validatedData['senha'], $paciente->senha)) {
+            Log::info('Paciente logado: ' . $paciente->email);
+            // Loga como paciente
+            Auth::guard('pacientes')->login($paciente); // Loga o paciente
+            return redirect()->route('paciente.dashboard'); // Redireciona para a página desejada
+        } else {
+            Log::warning('Tentativa de login falhou para o e-mail: ' . $validatedData['email']);
+            return back()->withErrors(['email' => 'Credenciais inválidas.']);
+        }
     }
+
 
     /**
      * Destroy an authenticated session.

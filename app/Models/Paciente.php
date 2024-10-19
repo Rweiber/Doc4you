@@ -2,13 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Paciente extends Model
+
+class Paciente extends Model implements AuthenticatableContract
 {
     /** @use HasFactory<\Database\Factories\PacienteFactory> */
-    use HasFactory;
+    use HasFactory, Authenticatable;
+
+    protected $attributes = [
+        'tipo' => 'paciente', // Definindo tipo como 'paciente'
+    ];
+
+    protected $table = 'pacientes';
 
     protected $fillable = [
         'nome',

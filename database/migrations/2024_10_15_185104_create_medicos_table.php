@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('medicos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
+            $table->string('email')->unique();
             $table->foreignId('especialidade_id')->constrained('especialidades');
             $table->string('crm')->unique();
+            $table->string('senha' )->nullable();
             $table->timestamps();
         });
     }

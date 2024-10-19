@@ -14,7 +14,7 @@
             <img src="{{ asset('images/logo.png') }}" alt="Logo do App" class="logo mb-3">
         </a>
         <nav >
-            <a href="" class="btn btn-primary">Login</a>
+            <a href="{{route('login')}}" class="btn btn-primary">Login</a>
             <a href="{{ route('registrar') }}" class="btn btn-secondary">Registrar</a>
         </nav>
     </header>

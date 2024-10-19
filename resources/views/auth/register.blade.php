@@ -37,6 +37,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha:</label>
+                    <input type="password" name="senha" id="senha" class="form-control" required>
+                </div>
             @elseif (old('tipo') === 'paciente')
                 <div class="mb-3">
                     <label for="nome" class="form-label">Nome:</label>
@@ -58,6 +67,11 @@
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha:</label>
+                    <input type="password" name="senha" id="senha" class="form-control" required>
                 </div>
 
                 <div class="mb-3">

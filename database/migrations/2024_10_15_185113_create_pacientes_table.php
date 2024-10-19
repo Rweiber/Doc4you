@@ -26,6 +26,7 @@ return new class extends Migration
             $table->date('data_nascimento'); 
             $table->string('responsavel_nome')->nullable(); 
             $table->string('responsavel_cpf')->nullable();  
+            $table->string('senha' )->nullable();
             $table->timestamps(); 
         });
     }

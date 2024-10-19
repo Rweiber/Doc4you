@@ -24,7 +24,8 @@ class RegistroController extends Controller
         $validatedData = $request->validate([
             'tipo' => 'required|in:medico,paciente',
             'nome' => 'required|string|max:255',
-            'email' => 'required_if:tipo,paciente|email|unique:pacientes,email',
+            'email' => 'required|email|max:255',
+            'senha' => 'required|string|min:8',
             'cpf' => ['required_if:tipo,paciente|unique:pacientes,cpf', new Cpf], 
             'cep' => 'required_if:tipo,paciente|string|max:9',
             'endereco' => 'required_if:tipo,paciente|string|max:255',
@@ -44,12 +45,15 @@ class RegistroController extends Controller
             Medico::create([
                 'nome' => $request->nome,
                 'crm' => $request->crm,
+                'email' => $request->email,
+                'senha' => bcrypt($request->senha),
                 'especialidade_id' => $request->especialidade_id
             ]);
         } elseif ($request->tipo === 'paciente') {
             Paciente::create([
                 'nome' => $request->nome,
                 'email' => $request->email,
+                'senha' => bcrypt($request->senha),
                 'cpf' => $request->cpf,
                 'cep' => $request->cep,
                 'endereco' => $request->endereco,

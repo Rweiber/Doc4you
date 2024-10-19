@@ -23,18 +23,18 @@ class DatabaseSeeder extends Seeder
         $especialidades = Especialidade::factory()->count(47)->create();
 
         // Criar médicos reutilizando especialidades existentes
-        Medico::factory(50)->make()->each(function ($medico) use ($especialidades) {
-            $medico->especialidade_id = $especialidades->random()->id;
-            $medico->save();
-        });
+        // Medico::factory(50)->make()->each(function ($medico) use ($especialidades) {
+        //     $medico->especialidade_id = $especialidades->random()->id;
+        //     $medico->save();
+        // });
 
         // Criar pacientes
-        $pacientes = Paciente::factory()->count(100)->create();
+        // $pacientes = Paciente::factory()->count(100)->create();
 
         // Criar telefones reutilizando pacientes existentes
-        Telefone::factory(100)->create();
+        // Telefone::factory(100)->create();
 
         // Criar consultas reutilizando pacientes e médicos existentes
-        Consulta::factory(100)->create();
+        // Consulta::factory(100)->create();
     }
 }

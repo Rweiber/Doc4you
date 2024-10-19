@@ -40,6 +40,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'medicos' => [
+            'driver' => 'session',
+            'provider' => 'medicos',
+        ],
+        'pacientes' => [
+            'driver' => 'session',
+            'provider' => 'pacientes',
+        ],
+        
     ],
 
     /*
@@ -62,8 +71,21 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\User::class,
         ],
+        'medicos' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Medico::class,
+        ],
+        'pacientes' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Paciente::class,
+        ],
+        
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',
