@@ -9,4 +9,6 @@ class Telefone extends Model
 {
     /** @use HasFactory<\Database\Factories\TelefoneFactory> */
     use HasFactory;
+
+
 }

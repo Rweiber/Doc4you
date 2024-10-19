@@ -15,12 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('cpf')->unique();
-            $table->timestamp('data_cadastro');
+            $table->timestamp('data_cadastro')->useCurrent(); 
             $table->string('email')->unique();
             $table->string('cep');
             $table->string('endereco');
+            $table->string('bairro')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('uf', 2)->nullable();
             $table->string('numero');
-            $table->timestamps();
+            $table->date('data_nascimento'); 
+            $table->string('responsavel_nome')->nullable(); 
+            $table->string('responsavel_cpf')->nullable();  
+            $table->timestamps(); 
         });
     }
 
@@ -32,3 +38,4 @@ return new class extends Migration
         Schema::dropIfExists('pacientes');
     }
 };
+
