@@ -14,7 +14,7 @@
                     <ul class="list-group">
                         @foreach ($consultas as $consulta)
                             <li class="list-group-item">
-                                Data: {{ $consulta->data }} - Hora: {{ $consulta->hora }} - Paciente: {{ $consulta->paciente->nome }}
+                                Data: {{ date('d/m/Y', strtotime($consulta->data_consulta)) }} - Hora: {{ $consulta->hora_consulta }} - Paciente: {{ $consulta->paciente->nome }}
                             </li>
                         @endforeach
                     </ul>

@@ -11,11 +11,11 @@ class PacienteController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-
     {
-        // Obtém o médico logado
         $paciente = Auth::guard('pacientes')->user();
-        return view('paciente.dashboard' , ['paciente'=> $paciente]);
+        $consultas = $paciente->consultas()->orderBy('data_consulta', 'asc') ->orderBy('hora_consulta', 'asc')->get(); // Busca as consultas do paciente
+
+        return view('paciente.dashboard', compact('paciente', 'consultas'));
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Middleware\CustomAuth;
+use App\Http\Controllers\ConsultaController;
 
 
 Route::get('/', function () {
@@ -28,17 +29,14 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 Route::middleware([CustomAuth::class])->group(function () {
     Route::get('/medico/dashboard', [MedicoController::class, 'index'])->name('medico.dashboard');
     Route::get('/paciente/dashboard', [PacienteController::class, 'index'])->name('paciente.dashboard');
+
+    Route::get('/consulta', [ConsultaController::class, 'create'])->name('consulta');
+    Route::post('/consulta', [ConsultaController::class, 'store'])->name('consulta.store');
+    Route::get('/consulta/{consulta}/edit', [ConsultaController::class, 'edit'])->name('consulta.edit');
+    Route::delete('/consulta/{consulta}', [ConsultaController::class, 'destroy'])->name('consulta.cancelar');
+    Route::get('/consulta/buscar', [ConsultaController::class, 'buscarMedicos'])->name('consulta.buscar');
+
 });
-
-
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-// require __DIR__.'/auth.php';
 
 
 

@@ -4,6 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Doc4You')</title>
     <link rel="stylesheet" href="{{ asset('/assets/css/bootstrap.min.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+        
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -13,10 +17,16 @@
 
             <img src="{{ asset('images/logo.png') }}" alt="Logo do App" class="logo mb-3">
         </a>
-        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-            @csrf
-            <button type="submit" class="btn btn-secondary">Logout</button>
-        </form>
+
+        <div>
+            @auth('pacientes')
+                <a href="{{ route('consulta') }}" class="btn btn-primary me-3">Agendar Consulta</a>
+            @endauth
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-secondary">Logout</button>
+            </form>
+        </div>
     </header>
 
     <!-- Conteúdo da Página -->
