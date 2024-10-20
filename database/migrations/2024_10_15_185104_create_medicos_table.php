@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->foreignId('especialidade_id')->constrained('especialidades');
             $table->string('crm')->unique();
-            $table->string('senha' )->nullable();
+            $table->string('senha' );
             $table->timestamps();
         });
     }

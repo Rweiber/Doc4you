@@ -20,7 +20,7 @@ class RegistroController extends Controller
     // Processa o registro do formulário
     public function registrar(Request $request)
     {
-        // Validação dos campos com o Geekcom Validator para CPF
+        
         $validatedData = $request->validate([
             'tipo' => 'required|in:medico,paciente',
             'nome' => 'required|string|max:255',
@@ -39,6 +39,7 @@ class RegistroController extends Controller
             'crm' => 'required_if:tipo,medico|unique:medicos,crm',
             'especialidade_id' => 'required_if:tipo,medico|exists:especialidades,id'
         ]);
+        
 
         // Salvamento do médico ou paciente com base no tipo
         if ($request->tipo === 'medico') {
@@ -65,6 +66,7 @@ class RegistroController extends Controller
                 'responsavel_nome' => $request->responsavel_nome,
                 'responsavel_cpf' => $request->responsavel_cpf,
             ]);
+            
         }
 
         // Redireciona com mensagem de sucesso

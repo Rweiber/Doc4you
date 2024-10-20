@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('cpf')->unique();
             $table->timestamp('data_cadastro')->useCurrent(); 
             $table->string('email')->unique();
+            $table->string('senha');
             $table->string('cep');
             $table->string('endereco');
             $table->string('bairro')->nullable();
@@ -26,7 +27,6 @@ return new class extends Migration
             $table->date('data_nascimento'); 
             $table->string('responsavel_nome')->nullable(); 
             $table->string('responsavel_cpf')->nullable();  
-            $table->string('senha' )->nullable();
             $table->timestamps(); 
         });
     }

@@ -38,11 +38,13 @@ class AuthenticatedSessionController extends Controller
         $paciente = Paciente::where('email', $validatedData['email'])->first();
 
         if ($medico && Hash::check($validatedData['senha'], $medico->senha)) {
+            
             Log::info('Médico logado: ' . $medico->email);
             // Loga como médico
             Auth::guard('medicos')->login($medico); // Loga o médico
             return redirect()->route('medico.dashboard'); // Redireciona para a página desejada
         } elseif ($paciente && Hash::check($validatedData['senha'], $paciente->senha)) {
+            
             Log::info('Paciente logado: ' . $paciente->email);
             // Loga como paciente
             Auth::guard('pacientes')->login($paciente); // Loga o paciente
@@ -59,10 +61,10 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard('medicos')->logout(); // Para médicos
+        Auth::guard('pacientes')->logout(); // Para pacientes
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

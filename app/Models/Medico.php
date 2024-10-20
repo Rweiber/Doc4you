@@ -13,9 +13,9 @@ class Medico extends Model implements AuthenticatableContract
     use HasFactory;
 
     use Authenticatable;
-    protected $attributes = [
-        'tipo' => 'medico', // Definindo tipo como 'medico'
-    ];
+    // protected $attributes = [
+    //     'tipo' => 'medico', // Definindo tipo como 'medico'
+    // ];
 
     protected $fillable = [
         'nome',

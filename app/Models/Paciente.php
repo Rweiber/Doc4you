@@ -13,16 +13,16 @@ class Paciente extends Model implements AuthenticatableContract
     /** @use HasFactory<\Database\Factories\PacienteFactory> */
     use HasFactory, Authenticatable;
 
-    protected $attributes = [
-        'tipo' => 'paciente', // Definindo tipo como 'paciente'
-    ];
+    // protected $attributes = [
+    //     'tipo' => 'paciente', // Definindo tipo como 'paciente'
+    // ];
 
-    protected $table = 'pacientes';
-
+    
     protected $fillable = [
         'nome',
         'cpf',
         'email',
+        'senha',
         'cep',
         'endereco',
         'bairro',
@@ -33,6 +33,7 @@ class Paciente extends Model implements AuthenticatableContract
         'responsavel_nome',
         'responsavel_cpf',
     ];
+    protected $table = 'pacientes';
         public function telefones()
     {
         return $this->hasMany(Telefone::class);

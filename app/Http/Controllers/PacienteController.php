@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PacienteController extends Controller
 {
@@ -10,8 +11,11 @@ class PacienteController extends Controller
      * Display a listing of the resource.
      */
     public function index()
+
     {
-        return view('paciente.dashboard');
+        // Obtém o médico logado
+        $paciente = Auth::guard('pacientes')->user();
+        return view('paciente.dashboard' , ['paciente'=> $paciente]);
     }
 
     /**
