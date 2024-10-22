@@ -28,5 +28,5 @@ O Doc4You facilita o agendamento de consultas médicas, conectando pacientes e m
 
 1. **Clone o repositório:**
     ```bash
-    git clone https://github.com/seu-usuario/seu-repositorio.git
+    git clone https://github.com/Rweiber/Doc4you/tree/main
     ```
