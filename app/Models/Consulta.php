@@ -18,11 +18,22 @@ class Consulta extends Model
         'hora_consulta',
         'status',
     ];
-        public function paciente()
+
+    /**
+     * Obtém o paciente associado a esta consulta.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paciente()
     {
         return $this->belongsTo(Paciente::class);
     }
 
+    /**
+     * Obtém o médico associado a esta consulta.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function medico()
     {
         return $this->belongsTo(Medico::class);

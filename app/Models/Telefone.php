@@ -14,6 +14,11 @@ class Telefone extends Model
         'paciente_id', 'numero'
     ];
 
+    /**
+     * Obtém o paciente associado a este telefone.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function paciente()
     {
         return $this->belongsTo(Paciente::class);

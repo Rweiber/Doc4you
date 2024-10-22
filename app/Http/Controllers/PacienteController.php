@@ -10,7 +10,9 @@ use App\Models\Paciente;
 class PacienteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Exibe o dashboard do paciente com suas consultas.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -30,7 +32,10 @@ class PacienteController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Exibe o formulário para editar os dados do paciente.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
      */
     public function edit($id)
     {
@@ -39,7 +44,11 @@ class PacienteController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza os dados do paciente no banco de dados.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
 {
@@ -110,8 +119,11 @@ class PacienteController extends Controller
 }
 
 
-    /**
-     * Remove the specified resource from storage.
+     /**
+     * Remove o paciente do banco de dados.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

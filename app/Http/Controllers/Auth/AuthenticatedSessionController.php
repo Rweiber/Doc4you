@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Log;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Exibe a view de login.
+     *
+     * @return \Illuminate\View\View
      */
     public function create(): View
     {
@@ -24,7 +26,10 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Lida com uma requisição de autenticação de entrada.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -57,7 +62,10 @@ class AuthenticatedSessionController extends Controller
 
 
     /**
-     * Destroy an authenticated session.
+     * Encerra a sessão autenticada.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request): RedirectResponse
     {

@@ -4,25 +4,36 @@
     <div class="container">
         <h1>Agendar Consulta</h1>
 
-        <!-- Formulário de Busca -->
-        <form method="GET" action="{{ route('consulta.buscar') }}" class="mb-3">
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="especialidade" class="form-label">Buscar por Especialidade:</label>
-                    <select name="especialidade_id" id="especialidade" class="form-control">
-                        <option value="">Selecione uma especialidade</option>
-                        @foreach($especialidades as $especialidade)
-                            <option value="{{ $especialidade->id }}">{{ $especialidade->nome }}</option>
-                        @endforeach
-                    </select>
+        {{-- Define $mostrarBusca se não estiver definido --}}
+        @if (!isset($mostrarBusca))
+            @php $mostrarBusca = true; @endphp 
+        @endif
+
+
+        {{-- Verifica se o paciente pode ou não ver o formulário de busca --}}
+        @if($mostrarBusca)
+            <!-- Formulário de Busca -->
+            <form method="GET" action="{{ route('consulta.buscar') }}" class="mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="especialidade" class="form-label">Buscar por Especialidade:</label>
+                        <select name="especialidade_id" id="especialidade" class="form-control">
+                            <option value="">Selecione uma especialidade</option>
+                            @foreach($especialidades as $especialidade)
+                                <option value="{{ $especialidade->id }}">{{ $especialidade->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="crm" class="form-label">Buscar por CRM:</label>
+                        <input type="text" name="crm" id="crm" class="form-control" placeholder="Digite o CRM">
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="crm" class="form-label">Buscar por CRM:</label>
-                    <input type="text" name="crm" id="crm" class="form-control" placeholder="Digite o CRM">
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Buscar</button>
-        </form>
+                <button type="submit" class="btn btn-primary mt-3">Buscar</button>
+            </form>
+        @else
+            <p>Exibindo apenas médicos pediatras devido à idade do paciente.</p>
+        @endif
 
         <!-- Exibição dos médicos -->
         @if(isset($medicos) && $medicos->count() > 0)

@@ -37,10 +37,24 @@ class Paciente extends Model implements AuthenticatableContract
         'responsavel_cpf',
     ];
     protected $table = 'pacientes';
-        public function telefones()
+
+    /**
+     * Obtém os telefones associados a este paciente.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+
+     
+    public function telefones()
     {
         return $this->hasMany(Telefone::class);
     }
+
+    /**
+     * Obtém as consultas associadas a este paciente.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
 
     public function consultas()
     {

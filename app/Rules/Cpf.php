@@ -8,9 +8,12 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class Cpf implements ValidationRule
 {
     /**
-     * Run the validation rule.
+     * Executa a regra de validação.
      *
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @param  \Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @return void
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Log;
 class CustomAuth
 {
     /**
-     * Handle an incoming request.
+     * Lida com uma requisição de entrada.
+     * Verifica a autenticação do usuário como médico ou paciente.
+     * Redireciona para o login se não estiver autenticado.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {

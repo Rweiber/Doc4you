@@ -19,35 +19,44 @@ class ConsultaController extends Controller
         //
     }
 
+    /**
+     * Busca médicos com base nos critérios de busca e idade do paciente.
+     * Se o paciente for menor de 12 anos, retorna apenas pediatras.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\View\View
+     */
     public function buscarMedicos(Request $request)
     {
         $query = Medico::query();
-
-        // Filtro por especialidade
-        if ($request->especialidade_id) {
-            $query->where('especialidade_id', $request->especialidade_id);
-        }
-
-        // Filtro por CRM
-        if ($request->crm) {
-            $query->where('crm', 'like', '%' . $request->crm . '%');
-        }
-
-        // Verificação da idade do paciente
         $paciente = auth()->guard('pacientes')->user();
+
+        // Inicialize $mostrarBusca *antes* do bloco condicional
+        $mostrarBusca = true; 
+
         if ($paciente->data_nascimento && \Carbon\Carbon::parse($paciente->data_nascimento)->age < 12) {
-            // Se for menor de 12, filtra apenas médicos pediatras (especialidade_id 3)
-            $query->where('especialidade_id', 3);
+            $query->where('especialidade_id', 2); // Pediatra (ID 2, corrigido)
+            $mostrarBusca = false; 
+        } else {
+            if ($request->especialidade_id) {
+                $query->where('especialidade_id', $request->especialidade_id);
+            }
+            if ($request->crm) {
+                $query->where('crm', 'like', '%' . $request->crm . '%');
+            }
         }
 
         $medicos = $query->get();
-        $especialidades = Especialidade::all(); // Obter todas as especialidades
+        $especialidades = Especialidade::all();
 
-        return view('consulta.dashboard', compact('medicos', 'especialidades'));
+        return view('consulta.dashboard', compact('medicos', 'especialidades', 'mostrarBusca'));
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Exibe o formulário para criar uma nova consulta.
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -56,7 +65,11 @@ class ConsultaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Armazena uma nova consulta no banco de dados.
+     * Verifica se pacientes menores de 12 anos estão sendo agendados com pediatras.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -64,18 +77,29 @@ class ConsultaController extends Controller
             'medico_id' => 'required|exists:medicos,id',
             'paciente_id' => 'required|exists:pacientes,id',
             'data_consulta' => 'required|date',
-            'hora_consulta' => 'required|date_format:H:i', // Validação para o formato de hora
+            'hora_consulta' => 'required|date_format:H:i',
         ]);
 
+        // Obtenha o paciente e sua idade
+        $paciente = auth()->guard('pacientes')->user();
+        $idade = Carbon::parse($paciente->data_nascimento)->age;
 
+        // Verifique a especialidade do médico
+        $medico = Medico::findOrFail($validatedData['medico_id']);
+
+        // Se o paciente tiver menos de 12 anos, só pode se consultar com pediatra (especialidade_id = 3)
+        if ($idade < 12 && $medico->especialidade_id != 2) {
+            return redirect()->back()->with('error', 'Pacientes com menos de 12 anos só podem se consultar com pediatras.');
+        }
+
+        // Criação da consulta
         $consulta = new Consulta;
         $consulta->medico_id = $validatedData['medico_id'];
-        $consulta->paciente_id = $request->paciente_id; //Paciente_id esta vindo da sessão
+        $consulta->paciente_id = $paciente->id;
         $consulta->data_consulta = $validatedData['data_consulta'];
         $consulta->hora_consulta = $validatedData['hora_consulta'];
 
         $consulta->save();
-
 
         return redirect()->route('paciente.dashboard')->with('success', 'Consulta agendada com sucesso!');
     }
@@ -89,7 +113,10 @@ class ConsultaController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Exibe o formulário para editar uma consulta existente.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
@@ -106,7 +133,11 @@ class ConsultaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza uma consulta existente no banco de dados.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -135,8 +166,11 @@ class ConsultaController extends Controller
         return redirect()->route('paciente.dashboard')->with('success', 'Consulta atualizada com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
+     /**
+     * Remove uma consulta do banco de dados.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

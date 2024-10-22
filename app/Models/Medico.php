@@ -25,11 +25,22 @@ class Medico extends Model implements AuthenticatableContract
         'senha',
     ];
     protected $table = 'medicos';
-        public function especialidade()
+
+    /**
+     * Obtém a especialidade associada a este médico.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function especialidade()
     {
         return $this->belongsTo(Especialidade::class);
     }
 
+    /**
+     * Obtém as consultas associadas a este médico.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function consultas()
     {
         return $this->hasMany(Consulta::class);

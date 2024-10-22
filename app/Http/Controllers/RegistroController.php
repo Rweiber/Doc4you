@@ -11,14 +11,23 @@ use Illuminate\Http\Request;
 
 class RegistroController extends Controller
 {
-    // Exibe o formulário de registro
+    /**
+     * Exibe o formulário de registro para médicos e pacientes.
+     *
+     * @return \Illuminate\View\View
+     */
     public function showForm()
     {
         $especialidades = Especialidade::all(); // Carregar especialidades para o formulário
         return view('auth.register', compact('especialidades'));
     }
 
-    // Processa o registro do formulário
+    /**
+     * Processa o registro de médicos ou pacientes.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function registrar(Request $request)
     {
         

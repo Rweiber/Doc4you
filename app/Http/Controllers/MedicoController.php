@@ -12,7 +12,9 @@ use App\Models\Especialidade;
 class MedicoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Exibe o dashboard do médico com suas consultas.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -40,7 +42,10 @@ class MedicoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Exibe o formulário para editar os dados do médico.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
      */
     public function edit($id)
     {
@@ -51,7 +56,11 @@ class MedicoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza os dados do médico no banco de dados.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -96,7 +105,10 @@ class MedicoController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Remove o médico do banco de dados.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
