@@ -10,5 +10,14 @@ class Telefone extends Model
     /** @use HasFactory<\Database\Factories\TelefoneFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'paciente_id', 'numero'
+    ];
+
+    public function paciente()
+    {
+        return $this->belongsTo(Paciente::class);
+    }
+
 
 }

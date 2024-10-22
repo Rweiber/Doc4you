@@ -20,11 +20,9 @@ class EspecialidadeFactory extends Factory
     protected $model = Especialidade::class;
     public function definition(): array
     {
-        
-            
-    
-        return [
-            'nome' => $this->faker->randomElement(["Cardiologia",
+        // Lista de especialidades
+        $especialidades = [
+            "Cardiologia",
             "Pediatria",
             "Dermatologia",
             "Neurologia",
@@ -71,7 +69,11 @@ class EspecialidadeFactory extends Factory
             "Medicina do Sono",
             "Dermatologia Estética",
             "Reabilitação"
-        ]),
+        ];
+
+        return [
+            'nome' => $this->faker->unique()->randomElement($especialidades),
         ];
     }
+
 }

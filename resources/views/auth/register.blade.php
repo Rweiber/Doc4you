@@ -74,6 +74,14 @@
                     <input type="password" name="senha" id="senha" class="form-control" required>
                 </div>
 
+                <div id="telefones-container">
+                    <div class="mb-3 telefone-item">
+                        <label for="telefone[]" class="form-label">Telefone:</label>
+                        <input type="text" name="telefone[]" class="form-control" value="{{ old('telefone.0') }}">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" id="add-telefone">Adicionar Telefone</button>
+
                 <div class="mb-3">
                     <label for="cep" class="form-label">CEP:</label>
                     <input type="text" name="cep" id="cep" class="form-control" value="{{ old('cep') }}" required>
@@ -128,89 +136,103 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    function verificaIdade() {
-        var dataNascimento = document.getElementById('data_nascimento');
-        if (dataNascimento && dataNascimento.value) {
-            var hoje = new Date();
-            var nascimento = new Date(dataNascimento.value);
-            var idade = hoje.getFullYear() - nascimento.getFullYear();
-            var mes = hoje.getMonth() - nascimento.getMonth();
-            if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
-                idade--;
+        function verificaIdade() {
+            var dataNascimento = document.getElementById('data_nascimento');
+            if (dataNascimento && dataNascimento.value) {
+                var hoje = new Date();
+                var nascimento = new Date(dataNascimento.value);
+                var idade = hoje.getFullYear() - nascimento.getFullYear();
+                var mes = hoje.getMonth() - nascimento.getMonth();
+                if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
+                    idade--;
+                }
+                // Exibe ou oculta os campos do responsável
+                document.getElementById('responsavel').style.display = idade < 18 ? 'block' : 'none';
             }
-            // Exibe ou oculta os campos do responsável
-            document.getElementById('responsavel').style.display = idade < 18 ? 'block' : 'none';
         }
-    }
 
-    // Preenche o campo de responsável automaticamente com base na idade
-    var dataNascimentoInput = document.getElementById('data_nascimento');
-    if (dataNascimentoInput) {
-        dataNascimentoInput.addEventListener('change', verificaIdade);
-    }
+        // Preenche o campo de responsável automaticamente com base na idade
+        var dataNascimentoInput = document.getElementById('data_nascimento');
+        if (dataNascimentoInput) {
+            dataNascimentoInput.addEventListener('change', verificaIdade);
+        }
 
-    // Preenchimento automático de endereço com API ViaCEP
-    var cepInput = document.getElementById('cep');
-    if (cepInput) {
-        cepInput.addEventListener('blur', function() {
-            var cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-            if (cep.length === 8) { // Verifica se o CEP tem 8 dígitos
-                fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!("erro" in data)) {
-                            // Preenche os campos de endereço com os dados retornados da API
-                            document.getElementById('endereco').value = data.logradouro;
-                            document.getElementById('bairro').value = data.bairro;
-                            document.getElementById('cidade').value = data.localidade;
-                            document.getElementById('uf').value = data.uf;
-                        } else {
-                            alert("CEP não encontrado.");
-                        }
-                    })
-                    .catch(error => {
-                        alert("Erro ao consultar o CEP.");
-                        console.error(error);
-                    });
-            }
-        });
-    }
-
-    // Validação de CPF ao sair do campo
-    var cpfInput = document.getElementById('cpf');
-        if (cpfInput) {
-            cpfInput.addEventListener('blur', function() {
-                var cpf = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-                if (!validaCpf(cpf)) {
-                    this.classList.add('is-invalid'); // Adiciona a classe de erro
-                    alert('CPF inválido.');
-                } else {
-                    this.classList.remove('is-invalid'); // Remove a classe de erro caso o CPF seja válido
+        // Preenchimento automático de endereço com API ViaCEP
+        var cepInput = document.getElementById('cep');
+        if (cepInput) {
+            cepInput.addEventListener('blur', function() {
+                var cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+                if (cep.length === 8) { // Verifica se o CEP tem 8 dígitos
+                    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!("erro" in data)) {
+                                // Preenche os campos de endereço com os dados retornados da API
+                                document.getElementById('endereco').value = data.logradouro;
+                                document.getElementById('bairro').value = data.bairro;
+                                document.getElementById('cidade').value = data.localidade;
+                                document.getElementById('uf').value = data.uf;
+                            } else {
+                                alert("CEP não encontrado.");
+                            }
+                        })
+                        .catch(error => {
+                            alert("Erro ao consultar o CEP.");
+                            console.error(error);
+                        });
                 }
             });
         }
 
-        // Função de validação de CPF
-        function validaCpf(cpf) {
-            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
-                return false;
+        // Validação de CPF ao sair do campo
+        var cpfInput = document.getElementById('cpf');
+            if (cpfInput) {
+                cpfInput.addEventListener('blur', function() {
+                    var cpf = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+                    if (!validaCpf(cpf)) {
+                        this.classList.add('is-invalid'); // Adiciona a classe de erro
+                        alert('CPF inválido.');
+                    } else {
+                        this.classList.remove('is-invalid'); // Remove a classe de erro caso o CPF seja válido
+                    }
+                });
             }
-            var soma = 0, resto;
-            for (var i = 1; i <= 9; i++) {
-                soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+
+            // Função de validação de CPF
+            function validaCpf(cpf) {
+                if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
+                    return false;
+                }
+                var soma = 0, resto;
+                for (var i = 1; i <= 9; i++) {
+                    soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+                }
+                resto = (soma * 10) % 11;
+                if ((resto === 10) || (resto === 11)) resto = 0;
+                if (resto != parseInt(cpf.substring(9, 10))) return false;
+                soma = 0;
+                for (var i = 1; i <= 10; i++) {
+                    soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+                }
+                resto = (soma * 10) % 11;
+                if ((resto === 10) || (resto === 11)) resto = 0;
+                return resto == parseInt(cpf.substring(10, 11));
             }
-            resto = (soma * 10) % 11;
-            if ((resto === 10) || (resto === 11)) resto = 0;
-            if (resto != parseInt(cpf.substring(9, 10))) return false;
-            soma = 0;
-            for (var i = 1; i <= 10; i++) {
-                soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
-            }
-            resto = (soma * 10) % 11;
-            if ((resto === 10) || (resto === 11)) resto = 0;
-            return resto == parseInt(cpf.substring(10, 11));
-        }
-    });
+            // Adicionar campos de telefone
+            var addTelefoneButton = document.getElementById('add-telefone');
+            addTelefoneButton.addEventListener('click', function() {
+                var telefonesContainer = document.getElementById('telefones-container');
+                var telefoneCount = telefonesContainer.getElementsByClassName('telefone-item').length;
+                
+                var newTelefoneItem = document.createElement('div');
+                newTelefoneItem.className = 'mb-3 telefone-item';
+                newTelefoneItem.innerHTML = `
+                    <label for="telefone[]" class="form-label">Telefone:</label>
+                    <input type="text" name="telefone[]" class="form-control" value="{{ old('telefone.${telefoneCount}') }}">
+                `;
+                telefonesContainer.appendChild(newTelefoneItem);
+            });
+        });
 
     </script>
 @endsection

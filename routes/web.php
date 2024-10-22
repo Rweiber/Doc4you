@@ -14,9 +14,9 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/dashboard', function () {
-    return redirect('/');  // Você pode redirecionar para a home ou para outra página
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return redirect('/');  // Você pode redirecionar para a home ou para outra página
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/registrar', [RegistroController::class, 'showForm'])->name('registrar');
 Route::post('/registrar', [RegistroController::class, 'registrar'])->name('registrar.store');
@@ -30,11 +30,24 @@ Route::middleware([CustomAuth::class])->group(function () {
     Route::get('/medico/dashboard', [MedicoController::class, 'index'])->name('medico.dashboard');
     Route::get('/paciente/dashboard', [PacienteController::class, 'index'])->name('paciente.dashboard');
 
+    //Consultas
+
     Route::get('/consulta', [ConsultaController::class, 'create'])->name('consulta');
     Route::post('/consulta', [ConsultaController::class, 'store'])->name('consulta.store');
     Route::get('/consulta/{consulta}/edit', [ConsultaController::class, 'edit'])->name('consulta.edit');
+    Route::put('/consulta/{consulta}', [ConsultaController::class, 'update'])->name('consulta.update');
     Route::delete('/consulta/{consulta}', [ConsultaController::class, 'destroy'])->name('consulta.cancelar');
     Route::get('/consulta/buscar', [ConsultaController::class, 'buscarMedicos'])->name('consulta.buscar');
+
+    // Paciente
+    Route::get('/paciente/{id}/edit', [PacienteController::class, 'edit'])->name('paciente.edit');
+    Route::delete('/paciente/{id}', [PacienteController::class, 'destroy'])->name('paciente.destroy');
+    Route::put('/paciente/{id}', [PacienteController::class, 'update'])->name('paciente.update');
+
+    // Médico
+    Route::get('/medico/{id}/edit', [MedicoController::class, 'edit'])->name('medico.edit');
+    Route::delete('/medico/{id}', [MedicoController::class, 'destroy'])->name('medico.destroy');
+    Route::put('/medico/{id}', [MedicoController::class, 'update'])->name('medico.update');
 
 });
 

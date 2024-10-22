@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Especialidade;
 use App\Models\Medico;
 use App\Models\Paciente;
+use App\Models\Telefone;
 use App\Rules\Cpf;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,8 @@ class RegistroController extends Controller
             'responsavel_nome' => 'nullable|string|max:255',
             'responsavel_cpf' => ['nullable', new Cpf],
             'crm' => 'required_if:tipo,medico|unique:medicos,crm',
-            'especialidade_id' => 'required_if:tipo,medico|exists:especialidades,id'
+            'especialidade_id' => 'required_if:tipo,medico|exists:especialidades,id',
+            'telefones.*' => 'required|string|max:15'
         ]);
         
 
@@ -51,7 +53,7 @@ class RegistroController extends Controller
                 'especialidade_id' => $request->especialidade_id
             ]);
         } elseif ($request->tipo === 'paciente') {
-            Paciente::create([
+            $paciente = Paciente::create([
                 'nome' => $request->nome,
                 'email' => $request->email,
                 'senha' => bcrypt($request->senha),
@@ -65,7 +67,19 @@ class RegistroController extends Controller
                 'data_nascimento' => $request->data_nascimento,
                 'responsavel_nome' => $request->responsavel_nome,
                 'responsavel_cpf' => $request->responsavel_cpf,
+                
             ]);
+             // Adicionar telefones
+             if ($request->has('telefone')) {
+                foreach ($request->telefone as $telefone) {
+                    if (!empty($telefone)) {
+                        Telefone::create([
+                            'paciente_id' => $paciente->id,
+                            'numero' => $telefone
+                        ]);
+                    }
+                }
+            }
             
         }
 
