@@ -34,7 +34,7 @@ class ConsultaController extends Controller
         // Inicialize $mostrarBusca *antes* do bloco condicional
         $mostrarBusca = true; 
 
-        if ($paciente->data_nascimento && \Carbon\Carbon::parse($paciente->data_nascimento)->age < 12) {
+        if ($paciente->data_nascimento && Carbon::parse($paciente->data_nascimento)->age < 12) {
             $query->where('especialidade_id', 2); // Pediatra (ID 2, corrigido)
             $mostrarBusca = false; 
         } else {
