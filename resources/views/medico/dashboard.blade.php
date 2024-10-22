@@ -43,18 +43,19 @@
                                         <div class="modal fade" id="detalhesConsulta{{ $consulta->id }}" tabindex="-1" aria-labelledby="detalhesConsultaLabel{{ $consulta->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
+                                                    <div class="modal-header bg-primary text-white">
                                                         <h5 class="modal-title" id="detalhesConsultaLabel{{ $consulta->id }}">Detalhes da Consulta</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <h6>Dados do Paciente:</h6>
-                                                        <ul>
+                                                        <!-- Dados do Paciente -->
+                                                        <h6 class="fw-bold">Dados do Paciente:</h6>
+                                                        <ul class="list-unstyled">
                                                             <li><strong>Nome:</strong> {{ $consulta->paciente->nome }}</li>
                                                             <li><strong>Email:</strong> {{ $consulta->paciente->email }}</li>
                                                             <li><strong>Data de Nascimento:</strong> {{ date('d/m/Y', strtotime($consulta->paciente->data_nascimento)) }}</li>
                                                             <li><strong>Telefones:</strong>
-                                                                <ul>
+                                                                <ul class="list-unstyled ps-3">
                                                                     @foreach ($consulta->paciente->telefones as $telefone)
                                                                         <li>{{ $telefone->numero }}</li>
                                                                     @endforeach
@@ -65,11 +66,11 @@
                                                             @endif
                                                         </ul>
 
-                                                        <h6>Dados da Consulta:</h6>
-                                                        <ul>
+                                                        <!-- Dados da Consulta -->
+                                                        <h6 class="fw-bold mt-3">Dados da Consulta:</h6>
+                                                        <ul class="list-unstyled">
                                                             <li><strong>Data:</strong> {{ date('d/m/Y', strtotime($consulta->data_consulta)) }}</li>
                                                             <li><strong>Hora:</strong> {{ $consulta->hora_consulta }}</li>
-                                                            <li><strong>Motivo da Consulta:</strong> {{ $consulta->motivo }}</li> <!-- Exemplo de campo extra -->
                                                         </ul>
                                                     </div>
                                                     <div class="modal-footer">
@@ -78,6 +79,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <!-- Fim do Modal -->
                                     </td>
                                 </tr>
